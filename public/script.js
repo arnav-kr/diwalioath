@@ -129,7 +129,7 @@ function getOathTakers() {
   })
     .then(r => r.json())
     .catch(err => {
-      document.getElementById("submit").disabled = false;
+      console.log("Couldn't get oath takers' names");
     })
     .then(res => {
       var list = document.getElementById("oath-taker-list");
@@ -143,7 +143,7 @@ function getOathTakers() {
       }
     })
     .catch(err => {
-      document.getElementById("submit").disabled = false;
+      console.log("Couldn't get oath takers' names");
     });
 }
 
@@ -153,11 +153,13 @@ function getCurrentOathCount() {
   })
     .then(r => r.json())
     .catch(err => {
+      console.log("Couldn't get number of oath takers");
     })
     .then(res => {
       document.getElementById("oath_taker_counter").innerText = res.count;
     })
     .catch(err => {
+      console.log("Couldn't get number of oath takers");
     })
 }
 

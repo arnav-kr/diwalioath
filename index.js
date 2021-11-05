@@ -1,6 +1,7 @@
 const { google } = require('googleapis');
 const express = require('express');
 const path = require("path");
+require('dotenv').config();
 const rateLimit = require('express-rate-limit');
 const app = express();
 const bodyParser = require('body-parser');

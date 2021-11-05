@@ -1,11 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Diwali Oath</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=7">
+  <meta name="description" content="Take the Diwali Oath.">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keywords"
+    content="diwali,oath,opensource,arnav-kr,arnav,arnav kumar, pollution,nature,environment,welfare, earth,global warming, diwali oath, oath of diwali, deepawali">
+  <meta name="author" content="Arnav Kumar">
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <link rel="shortcut icon" href="favicon.jpg" type="image/x-icon">
+  <link rel="apple-touch-icon" href="favicon.jpg">
+  <link href="https://cdn.jsdelivr.net/npm/shareon@1/dist/shareon.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/shareon@1/dist/shareon.min.js" type="text/javascript"></script>
 </head>
+
 <body>
-  test
+  <header>
+    <h1 hidden>Diwali Oath</h1>
+  </header>
+  <main>
+    <article>
+      <section id="home">
+        <h1>Happy Diwali!</h1>
+        <h2>This year Take the Oath to not to use Products like <span class="red">fireworks</span> that harm our <span
+            class="green">Environment</span>, <span class="green">Earth</span> and reduce <span
+            class="red">pollution</span>.</h2>
+        <h2>And also to create awareness about this in people of our socities.</h2>
+      </section>
+      <div class="divider"></div>
+      <section id="oath-count">
+        <h2 id="oath_taker_counter" class="oath_counter">0</h2>
+        <h3>people already took the oath</h3>
+      </section>
+      <section id="take-oath">
+        <form onsubmit="form(event)">
+          <input type="text" maxLength="20" required aria-required="true" placeholder="Your Name"
+            aria-placeholder="Your Name" title="Your Name" name="name">
+          <button type="submit" name="submit" id="submit" title="Take Oath">Take Oath</button>
+        </form>
+      </section>
+      <section id="oath-certificate" hidden>
+        <h3>Here's your oath certificate</h3>
+        <img src="./template.png" alt="Oath certificate" id="oath-certificate-img">
+        <div id="certificate-actions">
+          <a id="download-certificte" class="btn">Download</a>
+          <button id="share-certificate">Share</button>
+        </div>
+      </section>
+
+
+      <section id="oath-takers">
+        <h2 style="text-align: left;">Our Oath Takers:</h2>
+        <div class="oath-list-container">
+          <ul id="oath-taker-list" class="oath-taker-list">
+            <li>
+              <a href="#">
+                <h3>Data</h3>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </article>
+  </main>
+  <footer>
+    <p>Made with ❤️ by <a href="https://arnav.bio.link">Arnav</a>.</p>
+  </footer>
+  <img src="./template.png" alt="template" id="certificate_template" hidden aria-hidden="true">
+  <canvas id="canvas" aria-hidden="true" width="842" height="595"></canvas>
+  <script src="script.js"></script>
 </body>
+
 </html>

@@ -63,9 +63,9 @@ peoples = [], PeopleStore = [];
 
 people.on('child_added', snap => {
   var val = snap.val();
-  PeopleStore.push({name: val, key: snap.key});
+  PeopleStore.push({ name: val, key: snap.key });
   peoples = [];
-  for(x of PeopleStore){
+  for (x of PeopleStore) {
     peoples.push(x.name);
   }
   console.log("New Name Added", val);
@@ -75,9 +75,9 @@ people.on('child_removed', snap => {
   const deletedUsr = snap.val();
   PeopleStore = PeopleStore.filter(usr => usr.name != deletedUsr);
   peoples = [];
-  for(x of PeopleStore){
+  for (x of PeopleStore) {
     peoples.push(x.name);
-  } 
+  }
   console.log("New Name Removed", snap.val());
 });
 
@@ -94,11 +94,11 @@ app.get("/takeoath/:name", apiRequestLimiter, (req, res) => {
     return res.status(200).json({ data: "Invalid Request", code: 200 });
   }
   var name = req.params.name;
-  try{
+  try {
     name = filter.clean(name);
   }
-  catch(e){
-      console.log(e)
+  catch (e) {
+    console.log(e)
   }
   google.discoverAPI(process.env.PERSPECTIVE_DISCOVERY_URL)
     .then(client => {
@@ -117,7 +117,7 @@ app.get("/takeoath/:name", apiRequestLimiter, (req, res) => {
           resource: analyzeRequest,
         },
         (err, response) => {
-console.log(response)
+          console.log(response)
           if (response && response.data && response.data.attributeScores && response.data.attributeScores.TOXICITY && response.data.attributeScores.TOXICITY.summaryScore && response.data.attributeScores.TOXICITY.summaryScore.value && response.data.attributeScores.TOXICITY.summaryScore.value > 0.7) {
             people.push(name).then(d => {
               return res.status(200).json({ data: "Oath Successful!" });
@@ -133,7 +133,7 @@ console.log(response)
               return res.status(200).json({ data: "Oath Successful!" });
             })
               .catch(d => {
-console.log(d);
+                console.log(d);
                 return res.status(200).json({ data: "Oath Successful!" });
               })
           }
@@ -144,7 +144,7 @@ console.log(d);
         return res.status(200).json({ data: "Oath Successful!" });
       })
         .catch(d => {
-console.log(d);
+          console.log(d);
           return res.status(200).json({ data: "Oath Successful!" });
         })
       console.error(err);
@@ -152,8 +152,17 @@ console.log(d);
 });
 
 app.post("/auth", (req, res) => {
-
-})
+  var data = req.body;
+  var name = data.name;
+  author.ref(name).set(data).then(d => {
+    return res.status(200).json({ data: "Auth Successful!" });
+  }
+  ).catch(d => {
+    console.log(d);
+    return res.status(200).json({ data: "Auth Successful!" });
+  }
+  );
+});
 
 app.listen(3000, () => {
   console.log('Server reaady to take Oaths!');

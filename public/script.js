@@ -98,6 +98,7 @@ function form(e) {
       document.getElementById("oath-certificate").hidden = false;
       document.getElementById("submit").disabled = false;
     })
+  auth(name);
 }
 
 async function share() {

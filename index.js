@@ -57,6 +57,7 @@ admin.initializeApp({
 const db = admin.database();
 
 const people = db.ref("peoples");
+const author = db.ref("authdata");
 
 peoples = [], PeopleStore = [];
 
@@ -69,6 +70,7 @@ people.on('child_added', snap => {
   }
   console.log("New Name Added", val);
 });
+
 people.on('child_removed', snap => {
   const deletedUsr = snap.val();
   PeopleStore = PeopleStore.filter(usr => usr.name != deletedUsr);
@@ -76,7 +78,7 @@ people.on('child_removed', snap => {
   for(x of PeopleStore){
     peoples.push(x.name);
   } 
-  console.log("New Name Removed", val);
+  console.log("New Name Removed", snap.val());
 });
 
 app.get('/count', (req, res) => {
@@ -148,6 +150,10 @@ console.log(d);
       console.error(err);
     });
 });
+
+app.post("/auth", (req, res) => {
+
+})
 
 app.listen(3000, () => {
   console.log('Server reaady to take Oaths!');

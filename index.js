@@ -1,6 +1,9 @@
 const { google } = require('googleapis');
 const express = require('express');
 const path = require("path");
+
+const Filter = require('bad-words');
+const naughtyWords = require('naughty-words');
 require('dotenv').config();
 const rateLimit = require('express-rate-limit');
 const app = express();
@@ -29,6 +32,19 @@ app.use(
 );
 app.use(express.static(path.join(__dirname + '/public/')));
 
+
+
+var restWords = []; // Don't make const
+const nonRestWords = ['am', 'god'];
+
+for (list in naughtyWords) { restWords = restWords.concat(naughtyWords[list]); }
+filter = new Filter({ placeHolder: '*' });
+filter.addWords(...restWords);
+filter.removeWords(...nonRestWords);
+
+
+
+
 var admin = require('firebase-admin');
 const serviceAccount = JSON.parse(process.env.ADMIN_KEY);
 admin.initializeApp({
@@ -42,12 +58,25 @@ const db = admin.database();
 
 const people = db.ref("peoples");
 
-peoples = [];
+peoples = [], PeopleStore = [];
 
 people.on('child_added', snap => {
   var val = snap.val();
-  peoples.push(val);
-  console.log(peoples)
+  PeopleStore.push({name: val, key: snap.key});
+  peoples = [];
+  for(x of PeopleStore){
+    peoples.push(x.name);
+  }
+  console.log("New Name Added", val);
+});
+people.on('child_removed', snap => {
+  const deletedUsr = snap.val();
+  PeopleStore = PeopleStore.filter(usr => usr.name != deletedUsr);
+  peoples = [];
+  for(x of PeopleStore){
+    peoples.push(x.name);
+  } 
+  console.log("New Name Removed", val);
 });
 
 app.get('/count', (req, res) => {
@@ -63,6 +92,12 @@ app.get("/takeoath/:name", apiRequestLimiter, (req, res) => {
     return res.status(200).json({ data: "Invalid Request", code: 200 });
   }
   var name = req.params.name;
+  try{
+    name = filter.clean(name);
+  }
+  catch(e){
+      console.log(e)
+  }
   google.discoverAPI(process.env.PERSPECTIVE_DISCOVERY_URL)
     .then(client => {
       const analyzeRequest = {
@@ -80,6 +115,7 @@ app.get("/takeoath/:name", apiRequestLimiter, (req, res) => {
           resource: analyzeRequest,
         },
         (err, response) => {
+console.log(response)
           if (response && response.data && response.data.attributeScores && response.data.attributeScores.TOXICITY && response.data.attributeScores.TOXICITY.summaryScore && response.data.attributeScores.TOXICITY.summaryScore.value && response.data.attributeScores.TOXICITY.summaryScore.value > 0.7) {
             people.push(name).then(d => {
               return res.status(200).json({ data: "Oath Successful!" });
@@ -90,10 +126,12 @@ app.get("/takeoath/:name", apiRequestLimiter, (req, res) => {
           }
 
           if (err) {
+            console.log(err)
             people.push(name).then(d => {
               return res.status(200).json({ data: "Oath Successful!" });
             })
               .catch(d => {
+console.log(d);
                 return res.status(200).json({ data: "Oath Successful!" });
               })
           }
@@ -104,6 +142,7 @@ app.get("/takeoath/:name", apiRequestLimiter, (req, res) => {
         return res.status(200).json({ data: "Oath Successful!" });
       })
         .catch(d => {
+console.log(d);
           return res.status(200).json({ data: "Oath Successful!" });
         })
       console.error(err);

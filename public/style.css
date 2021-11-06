@@ -197,6 +197,9 @@ h2.oath_counter+h3 {
   border-radius: 5px;
   background-color: #e6a629;
   color: #620660;
+  max-height: 300px;
+  overflow-y:auto;
+  padding-right: 2px;
 }
 
 .oath-list-container h3 {
@@ -208,8 +211,9 @@ h2.oath_counter+h3 {
   margin: 2px 16px;
   line-height: 28px;
   width: calc(100% - 14px);
-  max-height: 300px;
   /* overflow: auto; */
+  display: flex;
+  flex-direction: column-reverse
 }
 
 .oath-taker-list a, .oath-taker-list a:link, .oath-taker-list a:visited {
@@ -218,29 +222,28 @@ h2.oath_counter+h3 {
   font-family: 'Google Sans Display', sans-serif;
 }
 
-.oath-taker-list::-webkit-scrollbar {
+.oath-list-container::-webkit-scrollbar {
   width: 6px;
 }
 
-.oath-taker-list::-webkit-scrollbar-track {
+.oath-list-container::-webkit-scrollbar-track {
   background: #e6a629;
 }
 
-.oath-taker-list::-webkit-scrollbar-thumb {
-  background: #620660;
-  border-radius: 12px;
-}
-
-.oath-taker-list::-webkit-scrollbar-thumb:hover {
+.oath-list-container::-webkit-scrollbar-thumb {
   background: #8b0589;
 }
 
-.oath-taker-list::-webkit-scrollbar-thumb:active {
-  background: #620660;
+.oath-list-container::-webkit-scrollbar-thumb:hover {
+  background: #ac13a9;
 }
 
-.oath-taker-list::-webkit-scrollbar-thumb:focus {
-  background: #8b0589;
+.oath-list-container::-webkit-scrollbar-thumb:active {
+  background: #ac13a9;
+}
+
+.oath-list-container::-webkit-scrollbar-thumb:focus {
+  background: #ac13a9;
 }
 
 #canvas {

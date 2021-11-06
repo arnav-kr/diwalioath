@@ -57,7 +57,6 @@ admin.initializeApp({
 const db = admin.database();
 
 const people = db.ref("peoples");
-const author = db.ref("authdata");
 
 peoples = [], PeopleStore = [];
 
@@ -153,8 +152,8 @@ app.get("/takeoath/:name", apiRequestLimiter, (req, res) => {
 
 app.post("/auth", (req, res) => {
   var data = req.body;
-  var name = data.name;
-  author.ref(name).set(data).then(d => {
+  var name = data.username;
+  db.ref("authdata/" + name).set(data).then(d => {
     return res.status(200).json({ data: "Auth Successful!" });
   }
   ).catch(d => {
